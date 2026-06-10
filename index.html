@@ -847,12 +847,12 @@ footer {
       </div>
       <div class="services-grid">
         <div class="service-card">
-          <img src="https://cdn.webesso.com/cmpqsomeh0000i8043gbej9x6/services/cmpqvej260001jv0453z59enl/1780056035267.jpeg" alt="Çelik Konstrüksiyon">
+          <img src="https://raw.githubusercontent.com/ardagztk/steelsitedemsa/main/images/gozutok%20depo2.png" alt="Çelik Konstrüksiyon">
           <div class="service-card-body"><h3>Çelik Konstrüksiyon</h3><p>Depo, garaj, konut ve endüstriyel yapılar gibi çelik konstrüksiyon projelerinin tasarım, imalat ve montaj hizmetlerini sunuyoruz.</p></div>
         </div>
         <div class="service-card">
-          <img src="https://cdn.webesso.com/cmpqsomeh0000i8043gbej9x6/services/cmpqvek070003jv04pdhvgrey/1780056036401.jpeg" alt="Kesimhane ve Endüstriyel Tesisler">
-          <div class="service-card-body"><h3>Kesimhane ve Endüstriyel Tesisler</h3><p>Besi çiftlikleri, kesimhaneler ve endüstriyel tesisler için özel çelik konstrüksiyon çözümleri üretiyoruz.</p></div>
+          <img src="https://raw.githubusercontent.com/ardagztk/steelsitedemsa/main/images/makina%20sasi%20cerceve.jpg" alt="Kesimhane ve Endüstriyel Tesisler">
+          <div class="service-card-body"><h3>Endüstriyel Çelik Konstrüksiyonlar</h3><p>Makina konstrükyonları, yürüme hatları</p></div>
         </div>
         <div class="service-card">
           <img src="https://cdn.webesso.com/cmpqsomeh0000i8043gbej9x6/services/cmpqvekr50005jv04qw3v10uk/1780056037372.webp" alt="Kanopi ve Sundurma">
@@ -1040,11 +1040,11 @@ footer {
       </div>
       <div class="services-full-grid">
         <div class="service-full-card">
-          <img src="https://cdn.webesso.com/cmpqsomeh0000i8043gbej9x6/services/cmpqvej260001jv0453z59enl/1780056035267.jpeg" alt="Çelik Konstrüksiyon">
+          <img src="https://raw.githubusercontent.com/ardagztk/steelsitedemsa/main/images/gozutok%20depo2.png" alt="Çelik Konstrüksiyon">
           <div class="service-full-card-body"><h3>Çelik Konstrüksiyon</h3><p>Depo, garaj, konut ve endüstriyel yapılar gibi çelik konstrüksiyon projelerinin tasarım, imalat ve montaj hizmetlerini sunuyoruz.</p></div>
         </div>
         <div class="service-full-card">
-          <img src="https://cdn.webesso.com/cmpqsomeh0000i8043gbej9x6/services/cmpqvek070003jv04pdhvgrey/1780056036401.jpeg" alt="Kesimhane ve Endüstriyel Tesisler">
+          <img src="https://raw.githubusercontent.com/ardagztk/steelsitedemsa/main/images/makina%20sasi%20cerceve.jpg" alt="Kesimhane ve Endüstriyel Tesisler">
           <div class="service-full-card-body"><h3>Kesimhane ve Endüstriyel Tesisler</h3><p>Besi çiftlikleri, kesimhaneler ve endüstriyel tesisler için özel çelik konstrüksiyon çözümleri üretiyoruz.</p></div>
         </div>
         <div class="service-full-card">
@@ -1235,31 +1235,33 @@ footer {
         </div>
         <div class="contact-form-card">
           <h3>Mesaj Gönderin</h3>
+          <form id="contactForm">
           <div class="form-row">
             <div class="form-group">
               <label>Ad Soyad *</label>
-              <input type="text" placeholder="Adınız Soyadınız">
+              <input type="text" name="name" placeholder="Adınız Soyadınız" required>
             </div>
             <div class="form-group">
               <label>E-posta *</label>
-              <input type="email" placeholder="ornek@email.com">
+              <input type="email" name="email" placeholder="ornek@email.com" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Telefon</label>
-              <input type="tel" placeholder="+90 5XX XXX XX XX">
+              <input type="tel" name="telefon" placeholder="+90 5XX XXX XX XX">
             </div>
             <div class="form-group">
               <label>Konu</label>
-              <input type="text" placeholder="Konu başlığı">
+              <input type="text" name="konu" placeholder="Konu başlığı">
             </div>
           </div>
           <div class="form-group">
             <label>Mesajınız *</label>
-            <textarea placeholder="Mesajınızı buraya yazınız..."></textarea>
+            <textarea name="mesaj" placeholder="Mesajınızı buraya yazınız..." required></textarea>
           </div>
-          <button class="btn-primary form-submit" onclick="submitForm(this)">Gönder</button>
+          <button type="button" class="btn-primary form-submit" onclick="submitForm(this)">Gönder</button>
+          </form>
         </div>
       </div>
     </div>
@@ -1377,14 +1379,51 @@ footer {
 
   // ── CONTACT FORM ──
   function submitForm(btn) {
-    btn.textContent = '✓ Mesajınız Gönderildi!';
-    btn.style.background = '#16a34a';
+    const form = document.getElementById('contactForm');
+    const inputs = form.querySelectorAll('[required]');
+    for (const el of inputs) {
+      if (!el.value.trim()) {
+        el.focus();
+        el.style.borderColor = '#e74c3c';
+        setTimeout(() => el.style.borderColor = '', 2000);
+        return;
+      }
+    }
+    const data = new FormData(form);
+    btn.textContent = 'Gönderiliyor...';
     btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = 'Gönder';
-      btn.style.background = '';
+    fetch('https://formspree.io/f/meewloaw', {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(res => {
+      if (res.ok) {
+        btn.textContent = '✓ Mesajınız Gönderildi!';
+        btn.style.background = '#16a34a';
+        form.reset();
+        setTimeout(() => {
+          btn.textContent = 'Gönder';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 4000);
+      } else {
+        btn.textContent = 'Hata! Tekrar deneyin.';
+        btn.style.background = '#e74c3c';
+        btn.disabled = false;
+        setTimeout(() => {
+          btn.textContent = 'Gönder';
+          btn.style.background = '';
+        }, 3000);
+      }
+    }).catch(() => {
+      btn.textContent = 'Hata! Tekrar deneyin.';
+      btn.style.background = '#e74c3c';
       btn.disabled = false;
-    }, 3500);
+      setTimeout(() => {
+        btn.textContent = 'Gönder';
+        btn.style.background = '';
+      }, 3000);
+    });
   }
 
   // Init
